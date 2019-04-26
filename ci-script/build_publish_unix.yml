@@ -16,7 +16,7 @@ jobs:
   # Linux and macOS.
   - task: CopyFiles@2
     inputs:
-      contents: 'target/release'
+      contents: 'target/release/*'
       targetFolder: $(Build.ArtifactStagingDirectory)/64
     displayName: Copy Release Files
   - task: PublishBuildArtifacts@1
