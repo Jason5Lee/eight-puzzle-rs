@@ -87,8 +87,10 @@ pub struct Game {
 
 impl Game {
     pub fn new() -> Game {
+        let opengl = OpenGL::V3_2;
         let mut window: PistonWindow = WindowSettings::new("Eight Puzzle", (640, 480))
             .samples(4)
+            .opengl(opengl)
             .build()
             .unwrap_or_else(|e| panic!("Failed to build PistonWindow: {}", e));
 
