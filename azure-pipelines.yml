@@ -34,7 +34,7 @@ jobs:
   - template: ci-script/build_publish_windows.yml
     parameters:
       name: Windows
-      vmImage: vs2017-win2016
+      vmImage: win2016
       rustupToolchain32: stable-i686-pc-windows-gnu
       rustupToolchain64: stable-x86_64-pc-windows-gnu
       version: 1.0
