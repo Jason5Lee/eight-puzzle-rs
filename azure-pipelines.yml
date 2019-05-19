@@ -1,21 +1,21 @@
 jobs:
-  - job: check_formatting_test_core
-    displayName: Check formatting and test puzzle core
-    pool:
-      vmImage: ubuntu-16.04
-    steps:
-      - script: |
-          curl https://sh.rustup.rs -sSf | sh -s -- -y
-          echo "##vso[task.setvariable variable=PATH]$PATH:$HOME/.cargo/bin"
-        displayName: Install Rust
-      - script: |
-          rustup component add rustfmt
-          cargo fmt -- --check
-        displayName: Run rustfmt
-      - script: |
-          cd eight-puzzle-core
-          cargo test --verbose
-        displayName: Run core tests.
+#  - job: check_formatting_test_core
+#    displayName: Check formatting and test puzzle core
+#    pool:
+#      vmImage: ubuntu-16.04
+#    steps:
+#      - script: |
+#          curl https://sh.rustup.rs -sSf | sh -s -- -y
+#          echo "##vso[task.setvariable variable=PATH]$PATH:$HOME/.cargo/bin"
+#        displayName: Install Rust
+#      - script: |
+#          rustup component add rustfmt
+#          cargo fmt -- --check
+#        displayName: Run rustfmt
+#      - script: |
+#          cd eight-puzzle-core
+#          cargo test --verbose
+#        displayName: Run core tests.
 
 #  - template: ci-script/build_publish_unix.yml
 #    parameters:
