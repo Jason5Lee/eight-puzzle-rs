@@ -17,19 +17,19 @@ jobs:
           cargo test --verbose
         displayName: Run core tests.
 
-  - template: ci-script/build_publish_unix.yml
-    parameters:
-      name: Linux
-      vmImage: ubuntu-16.04
-      rustupToolchain: stable-x86_64-unknown-linux-gnu
-      version: 1.0
+#  - template: ci-script/build_publish_unix.yml
+#    parameters:
+#      name: Linux
+#      vmImage: ubuntu-16.04
+#      rustupToolchain: stable-x86_64-unknown-linux-gnu
+#      version: 1.0
 
-  - template: ci-script/build_publish_unix.yml
-    parameters:
-      name: macOS
-      vmImage: macOS-10.13
-      rustupToolchain: stable-x86_64-apple-darwin
-      version: 1.0
+#  - template: ci-script/build_publish_unix.yml
+#    parameters:
+#      name: macOS
+#      vmImage: macOS-10.13
+#      rustupToolchain: stable-x86_64-apple-darwin
+#      version: 1.0
 
   - template: ci-script/build_publish_windows.yml
     parameters:
