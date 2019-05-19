@@ -171,8 +171,7 @@ impl Game {
                     Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
                     Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
                     Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
-                })
-                .unwrap_or_else(|| panic!("Failed to draw on finished."))
+                });
         }
         match e.press_args() {
             Some(Button::Keyboard(Key::R)) => Some(Status::start(hinter)),
