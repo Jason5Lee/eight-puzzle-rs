@@ -76,7 +76,7 @@ impl Resource {
     ) {
         text::Text::new_color([1.0, 1.0, 1.0, 1.0], size)
             .draw(text, glyphs, &c.draw_state, c.transform.trans(x, y), g)
-            .unwrap()
+            .unwrap_or_else(|e| panic!("Failed to write text: {}", e))
     }
 }
 
@@ -87,23 +87,23 @@ pub struct Game {
 
 impl Game {
     pub fn new() -> Game {
-        let opengl = OpenGL::V3_2;
-        let mut window: PistonWindow = WindowSettings::new("Eight Puzzle", (640, 480))
+        let mut window: PistonWindow = WindowSettings::new("Eight Puzzle", (640, 580))
             .samples(4)
-            .opengl(opengl)
             .build()
             .unwrap_or_else(|e| panic!("Failed to build PistonWindow: {}", e));
 
-        let mut exe_folder = std::env::current_exe().unwrap();
+        let mut exe_folder = std::env::current_exe()
+            .unwrap_or_else(|e| panic!("Failed to locate current file path: {}", e));
         exe_folder.pop();
         let assets = Search::KidsThenParents(1, 2)
             .of(exe_folder)
             .for_folder("Resources")
-            .unwrap();
+            .unwrap_or_else(|e| panic!("Resources not found: {}", e));
 
         let ref font = assets.join("FiraSans-Regular.ttf");
         let factory = window.factory.clone();
-        let glyphs = Glyphs::new(font, factory, TextureSettings::new()).unwrap();
+        let glyphs = Glyphs::new(font, factory, TextureSettings::new())
+            .unwrap_or_else(|e| panic!("Failed to create glyphs: {}", e));
 
         let goal = Board::from_array(&[1, 2, 3, 4, 0, 5, 6, 7, 8]);
         let hinter: Hinter<Board> = Hinter::new(goal);
@@ -172,7 +172,7 @@ impl Game {
                     Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
                     Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
                 })
-                .unwrap()
+                .unwrap_or_else(|| panic!("Failed to draw on finished."))
         }
         match e.press_args() {
             Some(Button::Keyboard(Key::R)) => Some(Status::start(hinter)),
