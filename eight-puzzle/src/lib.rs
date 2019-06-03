@@ -100,9 +100,7 @@ impl Game {
             .for_folder("Resources")
             .unwrap_or_else(|e| panic!("Resources not found: {}", e));
 
-        let ref font = assets.join("FiraSans-Regular.ttf");
-        let factory = window.factory.clone();
-        let glyphs = Glyphs::new(font, factory, TextureSettings::new())
+        let glyphs = window.load_font(assets.join("FiraSans-Regular.ttf"))
             .unwrap_or_else(|e| panic!("Failed to create glyphs: {}", e));
 
         let goal = Board::from_array(&[1, 2, 3, 4, 0, 5, 6, 7, 8]);
@@ -147,7 +145,7 @@ impl Game {
         }) = finish
         {
             window
-                .draw_2d(e, |c, g| {
+                .draw_2d(e, |c, g, device| {
                     clear([0.0, 0.0, 0.0, 0.0], g);
                     Resource::write_white_text(
                         glyphs,
@@ -171,6 +169,7 @@ impl Game {
                     Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
                     Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
                     Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
+                    glyphs.factory.encoder.flush(device);
                 });
         }
         match e.press_args() {
@@ -188,10 +187,11 @@ impl Game {
             ..
         } = resource;
 
-        window.draw_2d(e, |c, g| {
+        window.draw_2d(e, |c, g, device| {
             clear([0.0, 0.0, 0.0, 0.0], g);
             Resource::write_white_text(glyphs, c, g, 60.0, 100.0, 100, "Eight Puzzle");
             Resource::write_white_text(glyphs, c, g, 140.0, 200.0, 50, "Press S to start");
+            glyphs.factory.encoder.flush(device);
         });
 
         match e.press_args() {
@@ -246,7 +246,7 @@ impl Game {
             })));
         }
 
-        window.draw_2d(e, |c, g| {
+        window.draw_2d(e, |c, g, device| {
             clear([0.0, 0.0, 0.0, 0.0], g);
             Resource::write_white_text(
                 glyphs,
@@ -284,6 +284,7 @@ impl Game {
             Resource::write_white_text(glyphs, c, g, 300.0, 250.0, 25, "Hint: H");
             Resource::write_white_text(glyphs, c, g, 300.0, 275.0, 25, "Reset: R");
             Resource::write_white_text(glyphs, c, g, 300.0, 300.0, 25, "Quit: ESC");
+            glyphs.factory.encoder.flush(device);
         });
 
         match e.press_args() {
