@@ -102,7 +102,8 @@ impl Game {
             .for_folder("Resources")
             .unwrap_or_else(|e| panic!("Resources not found: {}", e));
 
-        let glyphs = window.load_font(assets.join("FiraSans-Regular.ttf"))
+        let glyphs = window
+            .load_font(assets.join("FiraSans-Regular.ttf"))
             .unwrap_or_else(|e| panic!("Failed to create glyphs: {}", e));
 
         let goal = Board::from_array(&[1, 2, 3, 4, 0, 5, 6, 7, 8]);
@@ -150,33 +151,32 @@ impl Game {
             board,
         } = finish;
 
-        window
-            .draw_2d(e, |c, g, device| {
-                clear([0.0, 0.0, 0.0, 0.0], g);
-                Resource::write_white_text(
-                        glyphs,
-                        c,
-                        g,
-                        0.0,
-                        25.0,
-                        25,
-                        &format!("Move: {}", move_count),
-                    );
-                    Resource::write_white_text(
-                        glyphs,
-                        c,
-                        g,
-                        0.0,
-                        50.0,
-                        25,
-                        &format!("Hint: {}", hint_count),
-                    );
-                    Game::draw_board(glyphs, c, g, board, 0.0, 350.0, 300.0, 100);
-                    Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
-                    Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
-                    Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
-                    glyphs.factory.encoder.flush(device);
-                });
+        window.draw_2d(e, |c, g, device| {
+            clear([0.0, 0.0, 0.0, 0.0], g);
+            Resource::write_white_text(
+                glyphs,
+                c,
+                g,
+                0.0,
+                25.0,
+                25,
+                &format!("Move: {}", move_count),
+            );
+            Resource::write_white_text(
+                glyphs,
+                c,
+                g,
+                0.0,
+                50.0,
+                25,
+                &format!("Hint: {}", hint_count),
+            );
+            Game::draw_board(glyphs, c, g, board, 0.0, 350.0, 300.0, 100);
+            Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
+            Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
+            Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
+            glyphs.factory.encoder.flush(device);
+        });
         match e.press_args() {
             Some(Button::Keyboard(Key::R)) => Some(Status::start(hinter)),
             Some(Button::Keyboard(Key::Escape)) => Some(Status::Menu),

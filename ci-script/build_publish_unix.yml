@@ -6,21 +6,38 @@ jobs:
     bin_path: ${{ parameters.binPath }}
     rustup_toolchain: ${{ parameters.rustupToolchain }}
   steps:
-  # Linux and macOS.
   - script: |
       curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain $RUSTUP_TOOLCHAIN
       echo "##vso[task.setvariable variable=PATH;]$PATH:$HOME/.cargo/bin"
     displayName: Install rust
   - script: cargo build --release
     displayName: Build the project
-  # Linux and macOS.
-  - task: CopyFiles@2
-    inputs:
-      contents: 'target/release/*'
-      targetFolder: $(Build.ArtifactStagingDirectory)/64
-    displayName: Copy Release Files
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: ${{ format('{0}{1}', parameters.name, parameters.version) }}
-    displayName: Publish
+  - ${{ if eq(parameters.name, 'osx') }}:
+      - script: ./generate_mac_os_app.sh
+        displayName: Generate MacOS App
+      - task: CopyFiles@2
+        contents: 'Eight Puzzle.app/*'
+        targetFolder: $(Build.ArtifactStagingDirectory)
+        displayName: Copy App File
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          artifactName: ${{ format('eight-puzzle-{0}-osx', parameters.version) }}
+        displayName: Publish
+  - ${{ if eq(parameters.name, 'linux') }}:
+      - task: CopyFiles@2
+        inputs:
+          sourceFolder: 'target/release'
+          contents: 'eight-puzzle'
+          targetFolder: $(Build.ArtifactStagingDirectory)
+        displayName: Copy Executable File
+      - task: CopyFiles@2
+        inputs:
+          contents: 'Resources/*'
+          targetFolder: $(Build.ArtifactStagingDirectory)
+        displayName: Copy Resources
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          artifactName: ${{ format('eight-puzzle-{0}-linux-x86_64', parameters.version) }}
+        displayName: Publish
