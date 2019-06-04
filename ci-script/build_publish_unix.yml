@@ -14,9 +14,11 @@ jobs:
     displayName: Build the project
   - ${{ if eq(parameters.name, 'osx') }}:
       - script: |
+          ls
           cp -R mac_os_app_template "Eight Puzzle.app"
           cp Resources/* "Eight Puzzle.app/Contents/Resources"
           cp target/release/eight-puzzle "Eight Puzzle.app/Contents/MacOS"
+          ls "Eight Puzzle.app"
         displayName: Generate MacOS App
       - task: CopyFiles@2
         inputs:
