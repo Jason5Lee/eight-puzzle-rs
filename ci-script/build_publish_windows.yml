@@ -17,20 +17,33 @@ jobs:
     displayName: Build for 32bit
   - task: CopyFiles@2
     inputs:
-      contents: 'target/release/*'
-      targetFolder: $(Build.ArtifactStagingDirectory)/32
-    displayName: Copy Release Files for 32bit
+      sourceFolder: 'target/release'
+      contents: 'eight-puzzle.exe'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+    displayName: Copy Exe File
+  - task: CopyFiles@2
+    inputs:
+      contents: 'Resources/*'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+    displayName: Copy Resources
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: ${{ format('eight-puzzle-{0}-win-i686', parameters.version) }}
+    displayName: Publish i686
   - script: rustup default %RUSTUP_TOOLCHAIN_64%
     displayName: Switch to x64 toolchain.
   - script: cargo build --release
     displayName: Build for 64bit
   - task: CopyFiles@2
     inputs:
-      contents: 'target/release/*'
-      targetFolder: $(Build.ArtifactStagingDirectory)/64
-    displayName: Copy Release Files for 64bit
+      sourceFolder: 'target/release'
+      contents: 'eight-puzzle.exe'
+      targetFolder: $(Build.ArtifactStagingDirectory)
+      overwrite: true
+    displayName: Copy Exe File
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: ${{ format('{0}{1}', parameters.name, parameters.version) }}
-    displayName: Publish
+      artifactName: ${{ format('eight-puzzle-{0}-win-x86_64', parameters.version) }}
+    displayName: Publish x86_64

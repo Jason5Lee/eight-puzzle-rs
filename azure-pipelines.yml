@@ -19,21 +19,21 @@ jobs:
 
   - template: ci-script/build_publish_unix.yml
     parameters:
-      name: Linux
+      name: linux
       vmImage: ubuntu-16.04
       rustupToolchain: stable-x86_64-unknown-linux-gnu
       version: 1.0
 
   - template: ci-script/build_publish_unix.yml
     parameters:
-      name: macOS
+      name: osx
       vmImage: macOS-10.13
       rustupToolchain: stable-x86_64-apple-darwin
       version: 1.0
 
   - template: ci-script/build_publish_windows.yml
     parameters:
-      name: Windows
+      name: win
       vmImage: vs2017-win2016
       rustupToolchain32: stable-i686-pc-windows-gnu
       rustupToolchain64: stable-x86_64-pc-windows-gnu

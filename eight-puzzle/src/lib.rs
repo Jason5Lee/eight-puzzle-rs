@@ -3,6 +3,7 @@ use eight_puzzle_core::state::*;
 use find_folder::Search;
 use math::Scalar;
 use piston_window::*;
+use std::time::Instant;
 
 type Board = HashState;
 
@@ -35,10 +36,10 @@ impl InGame {
 enum Status {
     Menu,
     InGame(InGame),
-    Finish(Option<Finish>),
+    Finish(Finish),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 struct Finish {
     move_count: usize,
     hint_count: usize,
@@ -89,6 +90,7 @@ impl Game {
     pub fn new() -> Game {
         let mut window: PistonWindow = WindowSettings::new("Eight Puzzle", (640, 580))
             .samples(4)
+            .opengl(OpenGL::V2_1)
             .build()
             .unwrap_or_else(|e| panic!("Failed to build PistonWindow: {}", e));
 
@@ -100,7 +102,8 @@ impl Game {
             .for_folder("Resources")
             .unwrap_or_else(|e| panic!("Resources not found: {}", e));
 
-        let glyphs = window.load_font(assets.join("FiraSans-Regular.ttf"))
+        let glyphs = window
+            .load_font(assets.join("FiraSans-Regular.ttf"))
             .unwrap_or_else(|e| panic!("Failed to create glyphs: {}", e));
 
         let goal = Board::from_array(&[1, 2, 3, 4, 0, 5, 6, 7, 8]);
@@ -120,62 +123,64 @@ impl Game {
 
     pub fn next(&mut self) -> Option<()> {
         let Game { resource, status } = self;
+        println!("{:?} status: {:?}.", Instant::now(), status);
         resource
             .window
             .next()
-            .and_then(|e| match status {
-                Status::Menu => Game::on_menu(resource, &e),
-                Status::InGame(in_game) => Game::in_game(resource, in_game, &e),
-                Status::Finish(finish) => Game::on_finish(resource, &e, finish),
+            .and_then(|e| {
+                println!("{:?} event: {:?}.", Instant::now(), e);
+                match status {
+                    Status::Menu => Game::on_menu(resource, &e),
+                    Status::InGame(in_game) => Game::in_game(resource, in_game, &e),
+                    Status::Finish(finish) => Game::on_finish(resource, &e, finish),
+                }
             })
             .map(|new_status| *status = new_status)
     }
 
-    fn on_finish(resource: &mut Resource, e: &Event, finish: &Option<Finish>) -> Option<Status> {
+    fn on_finish(resource: &mut Resource, e: &Event, finish: &Finish) -> Option<Status> {
         let Resource {
             window,
             glyphs,
             hinter,
             ..
         } = resource;
-        if let Some(Finish {
+        let Finish {
             move_count,
             hint_count,
             board,
-        }) = finish
-        {
-            window
-                .draw_2d(e, |c, g, device| {
-                    clear([0.0, 0.0, 0.0, 0.0], g);
-                    Resource::write_white_text(
-                        glyphs,
-                        c,
-                        g,
-                        0.0,
-                        25.0,
-                        25,
-                        &format!("Move: {}", move_count),
-                    );
-                    Resource::write_white_text(
-                        glyphs,
-                        c,
-                        g,
-                        0.0,
-                        50.0,
-                        25,
-                        &format!("Hint: {}", hint_count),
-                    );
-                    Game::draw_board(glyphs, c, g, board, 0.0, 350.0, 300.0, 100);
-                    Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
-                    Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
-                    Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
-                    glyphs.factory.encoder.flush(device);
-                });
-        }
+        } = finish;
+
+        window.draw_2d(e, |c, g, device| {
+            clear([0.0, 0.0, 0.0, 0.0], g);
+            Resource::write_white_text(
+                glyphs,
+                c,
+                g,
+                0.0,
+                25.0,
+                25,
+                &format!("Move: {}", move_count),
+            );
+            Resource::write_white_text(
+                glyphs,
+                c,
+                g,
+                0.0,
+                50.0,
+                25,
+                &format!("Hint: {}", hint_count),
+            );
+            Game::draw_board(glyphs, c, g, board, 0.0, 350.0, 300.0, 100);
+            Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
+            Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
+            Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
+            glyphs.factory.encoder.flush(device);
+        });
         match e.press_args() {
             Some(Button::Keyboard(Key::R)) => Some(Status::start(hinter)),
             Some(Button::Keyboard(Key::Escape)) => Some(Status::Menu),
-            _ => Some(Status::Finish(None)),
+            _ => Some(Status::Finish(*finish)),
         }
     }
 
@@ -239,11 +244,11 @@ impl Game {
         } = resource;
 
         if in_game.board == *goal {
-            return Some(Status::Finish(Some(Finish {
+            return Some(Status::Finish(Finish {
                 move_count: in_game.move_count,
                 hint_count: in_game.hint_count,
                 board: in_game.board,
-            })));
+            }));
         }
 
         window.draw_2d(e, |c, g, device| {
