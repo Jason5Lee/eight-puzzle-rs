@@ -121,6 +121,7 @@ impl Game {
 
     pub fn next(&mut self) -> Option<()> {
         let Game { resource, status } = self;
+        println!("{:?}", status);
         resource
             .window
             .next()
