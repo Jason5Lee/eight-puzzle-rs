@@ -6,7 +6,7 @@ Eight Puzzle Game written in Rust with piston.
 
 From [here](https://github.com/Jason5Lee/eight-puzzle-rs/releases/).
 
-This game requires OpenGL. If you fail to start, try installing OpenGL from [here](https://www.khronos.org/opengl/wiki/Getting_Started#Downloading_OpenGL).
+This game requires OpenGL 2.1 .
 
 ## Build
 
