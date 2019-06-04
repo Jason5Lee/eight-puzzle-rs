@@ -16,6 +16,7 @@ jobs:
       - script: |
           cp -R mac_os_app_template "Eight Puzzle.app"
           cp Resources/* "Eight Puzzle.app/Contents/Resources"
+          mkdir "Eight Puzzle.app/Contents/MacOS"
           cp target/release/eight-puzzle "Eight Puzzle.app/Contents/MacOS"
         displayName: Generate MacOS App
       - task: CopyFiles@2
