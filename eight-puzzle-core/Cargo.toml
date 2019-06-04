@@ -1,6 +1,6 @@
 [package]
 name = "eight-puzzle-core"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Jason Lee <jason5lee@hotmail.com>"]
 edition = "2018"
 
