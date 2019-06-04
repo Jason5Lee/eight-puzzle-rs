@@ -16,8 +16,9 @@ jobs:
       - script: ./generate_mac_os_app.sh
         displayName: Generate MacOS App
       - task: CopyFiles@2
-        contents: 'Eight Puzzle.app/*'
-        targetFolder: $(Build.ArtifactStagingDirectory)
+        inputs:
+          contents: 'Eight Puzzle.app/*'
+          targetFolder: $(Build.ArtifactStagingDirectory)
         displayName: Copy App File
       - task: PublishBuildArtifacts@1
         inputs:
