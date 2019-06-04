@@ -89,6 +89,7 @@ impl Game {
     pub fn new() -> Game {
         let mut window: PistonWindow = WindowSettings::new("Eight Puzzle", (640, 580))
             .samples(4)
+            .opengl(OpenGL::V2_1)
             .build()
             .unwrap_or_else(|e| panic!("Failed to build PistonWindow: {}", e));
 
