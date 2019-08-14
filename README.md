@@ -1,5 +1,7 @@
 # eight-puzzle-rs
 
+[![Build Status](https://dev.azure.com/jason5lee/eight-puzzle-rs/_apis/build/status/Jason5Lee.eight-puzzle-rs?branchName=master)](https://dev.azure.com/jason5lee/eight-puzzle-rs/_build/latest?definitionId=11&branchName=master)
+
 Eight Puzzle Game written in Rust with piston.
 
 ## Download
