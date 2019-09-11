@@ -6,14 +6,12 @@ Eight Puzzle Game written in Rust with piston.
 
 ## Download
 
-* [Eight Puzzle 1.0](release-notes/1.0/README.md)
+* [Eight Puzzle 1.1](release-notes/1.1/README.md)
 
 ## Build
 
 Clone this repo and run `cargo build --release` inside.
 
-## Troubleshooting
+## Known issues
 
-### `gl function is not loaded` error
-
-Please make sure that OpenGL v2.1 compatibility profile is supported.
+- Program crashes on Windows in Parallel Desktop, probably because the new version of OpenGL is not well supported.
