@@ -1,3 +1,11 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    exclude:
+      - release-notes/*
+      - README.md
 jobs:
   - job: check_formatting_test_core
     displayName: Check formatting and test puzzle core
