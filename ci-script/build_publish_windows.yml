@@ -1,3 +1,11 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    exclude:
+      - release-notes/*
+      - README.md
 jobs:
 - job: ${{ parameters.name }}
   pool:
