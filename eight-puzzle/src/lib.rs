@@ -1,10 +1,10 @@
 use eight_puzzle_core::hint::Hinter;
 use eight_puzzle_core::state::*;
 use find_folder::Search;
+use log::debug;
 use math::Scalar;
 use piston_window::*;
 use std::time::Instant;
-use log::debug;
 
 type Board = HashState;
 
