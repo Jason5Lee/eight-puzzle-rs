@@ -4,6 +4,7 @@ use find_folder::Search;
 use math::Scalar;
 use piston_window::*;
 use std::time::Instant;
+use log::debug;
 
 type Board = HashState;
 
@@ -121,12 +122,12 @@ impl Game {
 
     pub fn next(&mut self) -> Option<()> {
         let Game { resource, status } = self;
-        println!("{:?} status: {:?}.", Instant::now(), status);
+        debug!("{:?} status: {:?}.", Instant::now(), status);
         resource
             .window
             .next()
             .and_then(|e| {
-                println!("{:?} event: {:?}.", Instant::now(), e);
+                debug!("{:?} event: {:?}.", Instant::now(), e);
                 match status {
                     Status::Menu => Game::on_menu(resource, &e),
                     Status::InGame(in_game) => Game::in_game(resource, in_game, &e),
