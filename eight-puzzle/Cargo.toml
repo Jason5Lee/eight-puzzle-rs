@@ -9,6 +9,6 @@ name = "eight-puzzle"
 path = "src/main.rs"
 
 [dependencies]
-piston_window = "0.93"
+piston_window = "0.98.0"
 find_folder = "0.3"
 eight-puzzle-core = { path = "../eight-puzzle-core" }

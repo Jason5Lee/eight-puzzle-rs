@@ -66,7 +66,7 @@ struct Resource {
 }
 
 impl Resource {
-    fn write_white_text(
+    fn draw_white_text(
         glyphs: &mut Glyphs,
         c: Context,
         g: &mut G2d,
@@ -89,8 +89,6 @@ pub struct Game {
 impl Game {
     pub fn new() -> Game {
         let mut window: PistonWindow = WindowSettings::new("Eight Puzzle", (640, 580))
-            .samples(4)
-            .opengl(OpenGL::V2_1)
             .build()
             .unwrap_or_else(|e| panic!("Failed to build PistonWindow: {}", e));
 
@@ -153,7 +151,7 @@ impl Game {
 
         window.draw_2d(e, |c, g, device| {
             clear([0.0, 0.0, 0.0, 0.0], g);
-            Resource::write_white_text(
+            Resource::draw_white_text(
                 glyphs,
                 c,
                 g,
@@ -162,7 +160,7 @@ impl Game {
                 25,
                 &format!("Move: {}", move_count),
             );
-            Resource::write_white_text(
+            Resource::draw_white_text(
                 glyphs,
                 c,
                 g,
@@ -172,9 +170,9 @@ impl Game {
                 &format!("Hint: {}", hint_count),
             );
             Game::draw_board(glyphs, c, g, board, 0.0, 350.0, 300.0, 100);
-            Resource::write_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
-            Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
-            Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
+            Resource::draw_white_text(glyphs, c, g, 0.0, 500.0, 150, "Success");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 25.0, 25, "Restart: R");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 50.0, 25, "Quit: ESC");
             glyphs.factory.encoder.flush(device);
         });
         match e.press_args() {
@@ -194,8 +192,8 @@ impl Game {
 
         window.draw_2d(e, |c, g, device| {
             clear([0.0, 0.0, 0.0, 0.0], g);
-            Resource::write_white_text(glyphs, c, g, 60.0, 100.0, 100, "Eight Puzzle");
-            Resource::write_white_text(glyphs, c, g, 140.0, 200.0, 50, "Press S to start");
+            Resource::draw_white_text(glyphs, c, g, 60.0, 100.0, 100, "Eight Puzzle");
+            Resource::draw_white_text(glyphs, c, g, 140.0, 200.0, 50, "Press S to start");
             glyphs.factory.encoder.flush(device);
         });
 
@@ -221,7 +219,7 @@ impl Game {
         y -= square_size * 2.0;
         for i in 0..9 {
             if arr[i] != 0 {
-                Resource::write_white_text(
+                Resource::draw_white_text(
                     glyphs,
                     c,
                     g,
@@ -253,7 +251,7 @@ impl Game {
 
         window.draw_2d(e, |c, g, device| {
             clear([0.0, 0.0, 0.0, 0.0], g);
-            Resource::write_white_text(
+            Resource::draw_white_text(
                 glyphs,
                 c,
                 g,
@@ -262,7 +260,7 @@ impl Game {
                 25,
                 &format!("Move: {}", in_game.move_count),
             );
-            Resource::write_white_text(
+            Resource::draw_white_text(
                 glyphs,
                 c,
                 g,
@@ -273,7 +271,7 @@ impl Game {
             );
             Game::draw_board(glyphs, c, g, &in_game.board, 0.0, 350.0, 300.0, 100);
             if in_game.show_hint {
-                Resource::write_white_text(
+                Resource::draw_white_text(
                     glyphs,
                     c,
                     g,
@@ -283,12 +281,12 @@ impl Game {
                     &format!("Hint: {}", hinter.hint(&in_game.board).unwrap()),
                 )
             }
-            Resource::write_white_text(glyphs, c, g, 300.0, 25.0, 25, "Move: Direction keys.");
-            Resource::write_white_text(glyphs, c, g, 300.0, 50.0, 25, "Goal: ");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 25.0, 25, "Move: Direction keys.");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 50.0, 25, "Goal: ");
             Game::draw_board(glyphs, c, g, &goal, 425.0, 225.0, 200.0, 50);
-            Resource::write_white_text(glyphs, c, g, 300.0, 250.0, 25, "Hint: H");
-            Resource::write_white_text(glyphs, c, g, 300.0, 275.0, 25, "Reset: R");
-            Resource::write_white_text(glyphs, c, g, 300.0, 300.0, 25, "Quit: ESC");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 250.0, 25, "Hint: H");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 275.0, 25, "Reset: R");
+            Resource::draw_white_text(glyphs, c, g, 300.0, 300.0, 25, "Quit: ESC");
             glyphs.factory.encoder.flush(device);
         });
 
