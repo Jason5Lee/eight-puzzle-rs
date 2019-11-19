@@ -3,7 +3,6 @@ jobs:
   pool:
     vmImage: ${{ parameters.vmImage }}
   variables:
-    bin_path: ${{ parameters.binPath }}
     rustup_toolchain: ${{ parameters.rustupToolchain }}
   steps:
   - script: |
@@ -19,30 +18,33 @@ jobs:
           mkdir "Eight Puzzle.app/Contents/MacOS"
           cp target/release/eight-puzzle "Eight Puzzle.app/Contents/MacOS"
         displayName: Generate MacOS App
-      - task: CopyFiles@2
+      - task: ArchiveFiles@2
         inputs:
-          contents: 'Eight Puzzle.app/**/*'
-          targetFolder: $(Build.ArtifactStagingDirectory)
-        displayName: Copy App File
-      - task: PublishBuildArtifacts@1
-        inputs:
-          pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          artifactName: ${{ format('eight-puzzle-{0}-osx', parameters.version) }}
-        displayName: Publish
+          rootFolderOrFile: 'Eight Puzzle.app'
+          includeRootFolder: true
+          archiveType: 'zip'
+          archiveFile: "$(Build.ArtifactStagingDirectory)/${{ parameters.archiveName }}"
+        displayName: Archive App
   - ${{ if eq(parameters.name, 'linux') }}:
       - task: CopyFiles@2
         inputs:
           sourceFolder: 'target/release'
           contents: 'eight-puzzle'
-          targetFolder: $(Build.ArtifactStagingDirectory)
+          targetFolder: 'app'
         displayName: Copy Executable File
       - task: CopyFiles@2
         inputs:
           contents: 'Resources/*'
-          targetFolder: $(Build.ArtifactStagingDirectory)
+          targetFolder: 'app'
         displayName: Copy Resources
-      - task: PublishBuildArtifacts@1
+      - task: ArchiveFiles@2
         inputs:
-          pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          artifactName: ${{ format('eight-puzzle-{0}-linux-x86_64', parameters.version) }}
-        displayName: Publish
+          rootFolderOrFile: 'app'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: "$(Build.ArtifactStagingDirectory)/${{ parameters.archiveName }}"
+        displayName: Archive App
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: app
+    displayName: Publish
