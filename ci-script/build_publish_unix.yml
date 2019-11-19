@@ -42,7 +42,7 @@ jobs:
           targetFolder: 'app'
         displayName: Copy Resources
       - task: ArchiveFiles@2
-        input:
+        inputs:
           rootFolderOrFile: 'app'
           includeRootFolder: false
           archiveType: 'zip'
