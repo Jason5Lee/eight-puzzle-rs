@@ -58,11 +58,15 @@ stages:
     jobs:
     - job: githubq_release
       steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifactName: target
+          targetPath: "$(Pipeline.Workspace)/target"
       - task: GithubRelease@0
         displayName: 'Create GitHub Release'
         inputs:
           gitHubConnection: Jason5Lee GitHub Release
-          assets: '$(Pipeline.Workspace)/*'
+          assets: '$(Pipeline.Workspace)/target/*'
           repositoryName: Jason5Lee/eight-puzzle-rs
           tagSource: manual
           tag: v1.1-lw
