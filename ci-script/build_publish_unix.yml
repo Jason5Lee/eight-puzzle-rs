@@ -23,12 +23,8 @@ jobs:
           rootFolderOrFile: 'Eight Puzzle.app'
           includeRootFolder: true
           archiveType: 'zip'
-          archiveFile: ${{ format("$(Build.ArtifactStagingDirectory)/eight-puzzle-{0}-osx.zip", parameters.version) }}
+          archiveFile: "$(Build.ArtifactStagingDirectory)/${{ parameters.archiveName }}"
         displayName: Archive App
-      - task: PublishBuildArtifacts@1
-        inputs:
-          artifactName: app
-        displayName: Publish
   - ${{ if eq(parameters.name, 'linux') }}:
       - task: CopyFiles@2
         inputs:
@@ -46,9 +42,13 @@ jobs:
           rootFolderOrFile: 'app'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: ${{ format("$(Build.ArtifactStagingDirectory)/eight-puzzle-{0}-linux-x86_64.zip", parameters.version) }}
+          archiveFile: "$(Build.ArtifactStagingDirectory)/${{ parameters.archiveName }}"
         displayName: Archive App
       - task: PublishBuildArtifacts@1
         inputs:
           artifactName: app
         displayName: Publish
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: app
+    displayName: Publish

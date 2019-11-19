@@ -29,7 +29,7 @@ jobs:
       rootFolderOrFile: 'app'
       includeRootFolder: false
       archiveType: 'zip'
-      archiveFile: ${{ format("$(Build.ArtifactStagingDirectory)/eight-puzzle-{0}-win-{1}.zip", parameters.version, parameters.architecture) }}
+      archiveFile: "$(Build.ArtifactStagingDirectory)/${{ parameters.archiveName }}"
     displayName: Archive App
   - task: PublishBuildArtifacts@1
     inputs:
