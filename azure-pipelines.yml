@@ -56,10 +56,12 @@ stages:
   - stage: release
     deplayName: GitHub Release
     jobs:
-    - task: GithubRelease@0
-      displayName: 'Create GitHub Release'
-      inputs:
-        gitHubConnection: Jason5Lee
-        repositoryName: Jason5Lee/eight-puzzle-rs
-        tagSource: manual
-        tag: v1.1-lw
+    - job: github_release
+      steps:
+      - task: GithubRelease@0
+        displayName: 'Create GitHub Release'
+        inputs:
+          gitHubConnection: Jason5Lee
+          repositoryName: Jason5Lee/eight-puzzle-rs
+          tagSource: manual
+          tag: v1.1-lw
