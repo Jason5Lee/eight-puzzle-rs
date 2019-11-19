@@ -19,7 +19,7 @@ jobs:
           cp target/release/eight-puzzle "Eight Puzzle.app/Contents/MacOS"
         displayName: Generate MacOS App
       - task: ArchiveFiles@2
-        input:
+        inputs:
           rootFolderOrFile: 'Eight Puzzle.app'
           includeRootFolder: true
           archiveType: 'zip'
