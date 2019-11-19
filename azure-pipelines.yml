@@ -54,7 +54,7 @@ stages:
         version: 1.1
 
   - stage: release
-    deplayName: GitHub Release
+    displayName: GitHub Release
     jobs:
     - job: github_release
       steps:
