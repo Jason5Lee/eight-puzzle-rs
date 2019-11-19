@@ -62,7 +62,7 @@ stages:
         displayName: 'Create GitHub Release'
         inputs:
           gitHubConnection: Jason5Lee GitHub Release
-          assets: "$(Pipeline.Workspace)/*"
+          assets: '$(Pipeline.Workspace)/*'
           repositoryName: Jason5Lee/eight-puzzle-rs
           tagSource: manual
           tag: v1.1-lw

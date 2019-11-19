@@ -28,8 +28,8 @@ jobs:
     displayName: Copy Resources
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: ${{ format('eight-puzzle-{0}-win-i686', parameters.version) }}
+      artifactName: target
+      archiveName: ${{ format('eight-puzzle-{0}-win-i686', parameters.version) }}
     displayName: Publish i686
   - script: rustup default %RUSTUP_TOOLCHAIN_64%
     displayName: Switch to x64 toolchain.
@@ -44,6 +44,6 @@ jobs:
     displayName: Copy Exe File
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: ${{ format('eight-puzzle-{0}-win-x86_64', parameters.version) }}
+      artifactName: target
+      archiveName: ${{ format('eight-puzzle-{0}-win-x86_64', parameters.version) }}
     displayName: Publish x86_64
