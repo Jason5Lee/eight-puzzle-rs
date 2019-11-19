@@ -44,10 +44,6 @@ jobs:
           archiveType: 'zip'
           archiveFile: "$(Build.ArtifactStagingDirectory)/${{ parameters.archiveName }}"
         displayName: Archive App
-      - task: PublishBuildArtifacts@1
-        inputs:
-          artifactName: app
-        displayName: Publish
   - task: PublishBuildArtifacts@1
     inputs:
       artifactName: app
