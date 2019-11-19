@@ -4,7 +4,6 @@ trigger:
       - master
   paths:
     exclude:
-      - release-notes/*
       - README.md
 stages:
   - stage: test

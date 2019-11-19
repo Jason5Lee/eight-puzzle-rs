@@ -6,7 +6,7 @@ Eight Puzzle Game written in Rust with piston.
 
 ## Download
 
-* [Eight Puzzle 1.1](release-notes/1.1/README.md)
+* [Eight Puzzle 1.1](https://github.com/Jason5Lee/eight-puzzle-rs/releases)
 
 ## Build
 
