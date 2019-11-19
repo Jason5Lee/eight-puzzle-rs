@@ -3,47 +3,35 @@ jobs:
   pool:
     vmImage: ${{ parameters.vmImage }}
   variables:
-    bin_path: ${{ parameters.binPath }}
-    rustup_toolchain_32: ${{ parameters.rustupToolchain32 }}
-    rustup_toolchain_64: ${{ parameters.rustupToolchain64 }}
+    rustup_toolchain: ${{ parameters.rustupToolchain }}
   steps:
   - script: |
       curl -sSf -o rustup-init.exe https://win.rustup.rs
-      rustup-init.exe -y --default-toolchain %RUSTUP_TOOLCHAIN_32%
+      rustup-init.exe -y --default-toolchain %RUSTUP_TOOLCHAIN%
       set PATH=%PATH%;%USERPROFILE%\.cargo\bin
       echo "##vso[task.setvariable variable=PATH;]%PATH%;%USERPROFILE%\.cargo\bin"
     displayName: Install rust
   - script: cargo build --release
-    displayName: Build for 32bit
+    displayName: Build the project
   - task: CopyFiles@2
     inputs:
       sourceFolder: 'target/release'
       contents: 'eight-puzzle.exe'
-      targetFolder: $(Build.ArtifactStagingDirectory)
+      targetFolder: 'app'
     displayName: Copy Exe File
   - task: CopyFiles@2
     inputs:
       contents: 'Resources/*'
-      targetFolder: $(Build.ArtifactStagingDirectory)
+      targetFolder: 'app'
     displayName: Copy Resources
+  - task: ArchiveFiles@2
+    input:
+      rootFolderOrFile: 'app'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/${{ format("eight-puzzle-{0}-win-{1}", parameters.version, parameters.architecture) }}.zip'
+    displayName: Archive App
   - task: PublishBuildArtifacts@1
     inputs:
-      artifactName: target
-      archiveName: ${{ format('eight-puzzle-{0}-win-i686', parameters.version) }}
-    displayName: Publish i686
-  - script: rustup default %RUSTUP_TOOLCHAIN_64%
-    displayName: Switch to x64 toolchain.
-  - script: cargo build --release
-    displayName: Build for 64bit
-  - task: CopyFiles@2
-    inputs:
-      sourceFolder: 'target/release'
-      contents: 'eight-puzzle.exe'
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      overwrite: true
-    displayName: Copy Exe File
-  - task: PublishBuildArtifacts@1
-    inputs:
-      artifactName: target
-      archiveName: ${{ format('eight-puzzle-{0}-win-x86_64', parameters.version) }}
-    displayName: Publish x86_64
+      artifactName: app
+    displayName: Publish

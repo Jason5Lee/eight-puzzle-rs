@@ -36,37 +36,46 @@ stages:
         name: linux
         vmImage: ubuntu-16.04
         rustupToolchain: stable-x86_64-unknown-linux-gnu
-        version: 1.1
+        version: v1.1
 
     - template: ci-script/build_publish_unix.yml
       parameters:
         name: osx
         vmImage: macOS-10.13
         rustupToolchain: stable-x86_64-apple-darwin
-        version: 1.1
+        version: v1.1
 
     - template: ci-script/build_publish_windows.yml
       parameters:
-        name: win
+        name: win32
         vmImage: vs2017-win2016
-        rustupToolchain32: stable-i686-pc-windows-gnu
-        rustupToolchain64: stable-x86_64-pc-windows-gnu
-        version: 1.1
+        rustupToolchain: stable-i686-pc-windows-gnu
+        architecture: x86
+        version: v1.1
+
+    - template: ci-script/build_publish_windows.yml
+      parameters:
+        name: win64
+        vmImage: vs2017-win2016
+        rustupToolchain: stable-x86_64-pc-windows-gnu
+        architecture: x86
+        version: v1.1
 
   - stage: release
     displayName: GitHub Release
     jobs:
-    - job: githubq_release
+    - job: github_release
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
-          artifactName: target
-          targetPath: "$(Pipeline.Workspace)/target"
+          artifactName: app
+          targetPath: "$(Pipeline.Workspace)/app"
+        displayName: 'Download artifact'
       - task: GithubRelease@0
         displayName: 'Create GitHub Release'
         inputs:
           gitHubConnection: Jason5Lee GitHub Release
-          assets: '$(Pipeline.Workspace)/target/*'
+          assets: '$(Pipeline.Workspace)/app/*'
           repositoryName: Jason5Lee/eight-puzzle-rs
           tagSource: manual
           tag: v1.1-lw
