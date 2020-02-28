@@ -3,6 +3,9 @@ name = "eight-puzzle"
 version = "1.1.0"
 authors = ["Jason Lee <jason5lee@hotmail.com>"]
 edition = "2018"
+description = "Eight puzzle game written in Rust with piston window."
+repository = "https://github.com/Jason5Lee/eight-puzzle-rs"
+license = "GPL-3.0"
 
 [[bin]]
 name = "eight-puzzle"
@@ -13,4 +16,4 @@ piston_window = "0.98.0"
 find_folder = "0.3"
 log = "0.4"
 env_logger = "0.6"
-eight-puzzle-core = { path = "../eight-puzzle-core" }
+eight-puzzle-core = "1.0"

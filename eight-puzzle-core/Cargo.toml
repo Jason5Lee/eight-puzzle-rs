@@ -3,6 +3,9 @@ name = "eight-puzzle-core"
 version = "1.0.0"
 authors = ["Jason Lee <jason5lee@hotmail.com>"]
 edition = "2018"
+description = "Core funcionality for my eight-puzzle game."
+repository = "https://github.com/Jason5Lee/eight-puzzle-rs"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 rand = "0.6"
